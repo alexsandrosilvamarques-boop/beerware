@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Beerware</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="window-frame">
+    <!-- Barra Superior Retrô -->
+    <div class="title-bar">
+      <span id="txt-app-title">Beerware</span>
+      <div class="title-bar-controls">
+        <button>?</button>
+        <button>X</button>
+      </div>
+    </div>
+
+    <!-- Indicadores Financeiros e de Tempo -->
+    <div class="top-bar">
+      <div class="stat-box"><span id="txt-cash">Saldo:</span> <span id="val-cash">R$ 0</span></div>
+      <div class="stat-box"><span id="txt-turn">Mês:</span> <span id="val-turn">1</span></div>
+      <div class="stat-box"><span id="txt-reputation">Reputação:</span> <span id="val-reputation">50%</span></div>
+      <button id="btn-advance-turn" style="margin-left: auto;">Avançar Mês</button>
+    </div>
+
+    <!-- Painéis do Jogo -->
+    <div class="main-content">
+      
+      <!-- Painel de Expansão e Fábricas -->
+      <fieldset>
+        <legend id="txt-factories">Fábricas Instaladas</legend>
+        <div id="factory-list">Nenhuma fábrica construída.</div>
+        <hr style="border: 1px inset #fff; margin: 8px 0;">
+        <div class="form-group">
+          <label>Cidade:</label>
+          <select id="select-factory-city"></select>
+          <button id="btn-build-factory">Construir Fábrica</button>
+        </div>
+      </fieldset>
+
+      <!-- Painel de Logística e Vendas -->
+      <fieldset>
+        <legend id="txt-dispatch">Logística e Despacho</legend>
+        <div class="form-group">
+          <label id="txt-select-beer">Cerveja:</label>
+          <select id="select-beer"></select>
+        </div>
+        <div class="form-group">
+          <label>Fábrica Origem:</label>
+          <select id="select-source-factory"></select>
+        </div>
+        <div class="form-group">
+          <label id="txt-select-target">Destino:</label>
+          <select id="select-target-city"></select>
+        </div>
+        <div class="form-group">
+          <label>Quantidade (Barril):</label>
+          <input type="number" id="input-amount" value="100" min="10" step="10" style="width: 70px;">
+        </div>
+        <div class="form-group">
+          <span id="txt-frete-estimado">Frete: R$ 0.00</span>
+          <button id="btn-dispatch">Enviar Carga</button>
+        </div>
+      </fieldset>
+
+      <!-- Log de Operações -->
+      <fieldset class="full-width">
+        <legend id="txt-log-title">Relatório de Atividades</legend>
+        <div class="log-box" id="game-logs"></div>
+      </fieldset>
+
+    </div>
+  </div>
+
+  <script type="module" src="game.js"></script>
+</body>
+</html>

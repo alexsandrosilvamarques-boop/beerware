@@ -1,0 +1,133 @@
+* {
+  box-sizing: border-box;
+  font-family: "MS Sans Serif", Tahoma, sans-serif;
+  font-size: 11px;
+}
+
+body {
+  background-color: #008080; /* Teal clássico do Win95 */
+  margin: 0;
+  padding: 10px;
+}
+
+#window-frame {
+  background-color: #c0c0c0;
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  border-right: 2px solid #000000;
+  border-bottom: 2px solid #000000;
+  width: 900px;
+  max-width: 100%;
+  margin: 0 auto;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+}
+
+.title-bar {
+  background: linear-gradient(90deg, #000080, #1084d0);
+  padding: 3px 5px;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title-bar-controls button {
+  font-weight: bold;
+  width: 16px;
+  height: 14px;
+  line-height: 10px;
+  font-size: 9px;
+  padding: 0;
+}
+
+.top-bar {
+  display: flex;
+  gap: 15px;
+  padding: 6px;
+  background-color: #c0c0c0;
+  border-bottom: 2px groove #fff;
+}
+
+.stat-box {
+  background: #fff;
+  border-top: 2px solid #808080;
+  border-left: 2px solid #808080;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  padding: 3px 6px;
+  font-weight: bold;
+}
+
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 8px;
+}
+
+fieldset {
+  border: 2px groove #ffffff;
+  padding: 8px;
+  margin: 0;
+  background-color: #c0c0c0;
+}
+
+legend {
+  font-weight: bold;
+  padding: 0 4px;
+}
+
+button {
+  background-color: #c0c0c0;
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  border-right: 2px solid #000000;
+  border-bottom: 2px solid #000000;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+button:active {
+  border-top: 2px solid #000000;
+  border-left: 2px solid #000000;
+  border-right: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+}
+
+button:disabled {
+  color: #808080;
+  cursor: not-allowed;
+}
+
+select, input {
+  border-top: 2px solid #808080;
+  border-left: 2px solid #808080;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  padding: 2px;
+}
+
+.log-box {
+  background-color: #fff;
+  height: 140px;
+  overflow-y: scroll;
+  padding: 4px;
+  border-top: 2px solid #808080;
+  border-left: 2px solid #808080;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  font-family: "Courier New", monospace;
+  font-size: 11px;
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+.form-group {
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
