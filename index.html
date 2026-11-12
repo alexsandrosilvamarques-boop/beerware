@@ -170,5 +170,22 @@
 
   <!-- Ponto de Entrada da Arquitetura Modular (ES6) -->
   <script type="module" src="js/app.js"></script>
+
+<!-- Detector Visual de Erros (Mostra na tela se algum arquivo falhar) -->
+  <script>
+    window.addEventListener('error', function(e) {
+      let box = document.getElementById('debug-error-box');
+      if (!box) {
+        box = document.createElement('div');
+        box.id = 'debug-error-box';
+        box.style = 'position:fixed;bottom:0;left:0;right:0;background:#990000;color:#fff;padding:12px;font-family:monospace;font-size:12px;z-index:9999;word-break:break-all;border-top:2px solid #ff4444;';
+        document.body.appendChild(box);
+      }
+      box.innerHTML = '<strong>❌ ERRO DETECTADO:</strong><br>' + (e.message || e.error || 'Falha ao carregar script modular.');
+    });
+  </script>
+
+  <!-- Ponto de Entrada -->
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>
