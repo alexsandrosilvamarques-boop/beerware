@@ -8,112 +8,154 @@
 </head>
 <body>
 
-  <!-- Topo Fixo: Balanço e Controle de Tempo -->
-  <header class="hud">
-    <div class="hud-stat">
-      <small>CAIXA DISPONÍVEL</small>
-      <span id="hud-cash" class="val-cash">R$ 50.000,00</span>
+  <!-- Topo Fixo: Balanço Geral & Tempo -->
+  <header class="hud-top">
+    <div class="hud-group">
+      <div class="hud-cell cash">
+        <span class="hud-tag">CAIXA LIVRE</span>
+        <span id="val-caixa" class="hud-main">R$ 50.000</span>
+      </div>
+      <div class="hud-cell networth">
+        <span class="hud-tag">PATRIMÔNIO TOTAL</span>
+        <span id="val-patrimonio" class="hud-main">R$ 75.000</span>
+      </div>
+      <div class="hud-cell month">
+        <span class="hud-tag">MÊS DE OPERAÇÃO</span>
+        <span id="val-mes" class="hud-main">Mês 1</span>
+      </div>
     </div>
-    <div class="hud-stat">
-      <small>FATURAMENTO MÊS</small>
-      <span id="hud-last-profit" class="val-profit">+R$ 0,00</span>
-    </div>
-    <div class="hud-stat">
-      <small>MÊS ATUAL</small>
-      <span id="hud-month" class="val-highlight">1</span>
-    </div>
-    <button id="btn-next-turn" class="btn-advance">
-      <span>Virar Mês ⏩</span>
+
+    <button id="btn-next-turn" class="btn-turn">
+      <span>Passar Mês ⏩</span>
+      <small id="lbl-turn-sub">Executar Vendas</small>
     </button>
   </header>
 
-  <!-- Noticiário em Tempo Real -->
-  <div class="ticker">
-    <span class="ticker-badge">PLANTÃO</span>
-    <span id="news-text">Mercado cervejeiro nacional inicia o ano aquecido!</span>
+  <!-- Noticiário Industrial -->
+  <div class="news-banner">
+    <span class="news-pill">MERCADO</span>
+    <span id="news-headline">Início das operações. As cervejarias artesanais disputam o paladar dos brasileiros.</span>
   </div>
 
-  <!-- Navegação Mobile em Abas -->
-  <nav class="tabs-nav">
-    <button class="tab-link active" data-tab="tab-mercado">🗺️ Mercados & Vendas</button>
-    <button class="tab-link" data-tab="tab-producao">🏭 Produção & Fábricas</button>
-    <button class="tab-link" data-tab="tab-catalogo">🍺 Catálogo de Preços</button>
+  <!-- Barra de Abas -->
+  <nav class="nav-bar">
+    <button class="nav-tab active" data-tab="tab-mercados">🗺️ Praças & Demanda</button>
+    <button class="nav-tab" data-tab="tab-fabricas">🏭 Fábricas & Galpões</button>
+    <button class="nav-tab" data-tab="tab-dre">📊 Balanço & DRE</button>
+    <button class="nav-tab" data-tab="tab-metas">🏆 Metas & Prêmios <span id="badge-metas" class="badge hidden">0</span></button>
+    <button class="nav-tab" data-tab="tab-precos">🍺 Preços & Fórmulas</button>
   </nav>
 
-  <main class="main-body">
+  <main class="main-wrapper">
 
-    <!-- ABA 1: MERCADOS LOCAIS -->
-    <section id="tab-mercado" class="tab-view active">
-      <div class="view-header">
-        <h2>Capitais de Consumo</h2>
-        <p>Ajuste sua verba de publicidade em cada cidade para roubar mercado da MegaCerveja S/A.</p>
+    <!-- ABA 1: PRAÇAS E DEMANDA -->
+    <section id="tab-mercados" class="tab-pane active">
+      <div class="pane-head">
+        <h2>Centros de Consumo Nacional</h2>
+        <p>Defina o plano de remessa mensal para cada cidade. Cuidado para não deixar faltar nem mandar cerveja errada para o perfil do público!</p>
       </div>
-      <div id="cities-grid" class="cards-grid"></div>
+      <div id="grid-cidades" class="cards-layout"></div>
     </section>
 
-    <!-- ABA 2: PRODUÇÃO E FÁBRICAS -->
-    <section id="tab-producao" class="tab-view">
-      <div class="view-header flex-between">
+    <!-- ABA 2: FÁBRICAS E TANQUES -->
+    <section id="tab-fabricas" class="tab-pane">
+      <div class="pane-head flex-split">
         <div>
-          <h2>Parque Fabril</h2>
-          <p>Suas cervejarias operam sozinhas a cada virada de mês.</p>
+          <h2>Parque Fabril & Capacidade Instalada</h2>
+          <p>Gerencie tanques de fermentação, estoque em galpão e ordens de brassagem mensal.</p>
         </div>
-        <button id="btn-build-factory" class="btn-accent">+ Nova Fábrica (R$ 25.000)</button>
+        <button id="btn-nova-fabrica" class="btn-accent">+ Construir Cervejaria (R$ 30.000)</button>
       </div>
-      <div id="breweries-grid" class="cards-grid"></div>
+      <div id="grid-fabricas" class="cards-layout"></div>
     </section>
 
-    <!-- ABA 3: CATÁLOGO E PRECIFICAÇÃO -->
-    <section id="tab-catalogo" class="tab-view">
-      <div class="view-header">
-        <h2>Estratégia de Produtos</h2>
-        <p>Defina o preço de venda das suas fórmulas. Preços baixos vendem em massa; preços altos exigem reputação e sabor.</p>
+    <!-- ABA 3: BALANÇO E DRE -->
+    <section id="tab-dre" class="tab-pane">
+      <div class="pane-head">
+        <h2>Demonstrativo de Resultados do Exercício (DRE)</h2>
+        <p>Acompanhamento contábil auditado das suas receitas, custos operacionais e margens.</p>
       </div>
-      <div id="beer-catalog-grid" class="cards-grid"></div>
-      
-      <div class="danger-zone">
-        <button id="btn-reset-game" class="btn-danger">⚠️ Reiniciar Império (Apagar Salve)</button>
+      <div class="dre-panel">
+        <div id="dre-container" class="dre-table">
+          <p class="text-muted">Nenhum mês fechado ainda. Clique em "Passar Mês" para emitir o primeiro balanço.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABA 4: METAS E CONQUISTAS -->
+    <section id="tab-metas" class="tab-pane">
+      <div class="pane-head">
+        <h2>Metas de Expansão & Recompensas</h2>
+        <p>Bata objetivos de mercado e descarregue injeções de capital de investidores e bônus da indústria.</p>
+      </div>
+      <div id="grid-metas" class="metas-layout"></div>
+    </section>
+
+    <!-- ABA 5: PREÇOS E FÓRMULAS -->
+    <section id="tab-precos" class="tab-pane">
+      <div class="pane-head">
+        <h2>Catálogo de Cervejas & Precificação</h2>
+        <p>Ajuste o valor que o consumidor paga na prateleira. Preço alto demais espanta clientes em cidades populares.</p>
+      </div>
+      <div id="grid-cervejas" class="cards-layout"></div>
+
+      <div class="reset-box">
+        <button id="btn-reset-save" class="btn-outline-danger">⚠️ Reiniciar Império (Apagar Progresso Salvo)</button>
       </div>
     </section>
 
   </main>
 
-  <!-- MODAL DE FECHAMENTO DO MÊS (BALANÇO) -->
-  <div id="modal-report" class="modal-overlay hidden">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3 id="report-title">Balanço do Mês 1</h3>
-        <button id="btn-close-modal" class="modal-close-btn">&times;</button>
+  <!-- MODAL: BALANÇO MENSAL AUDITADO -->
+  <div id="modal-balanco" class="modal-backdrop hidden">
+    <div class="modal-box">
+      <div class="modal-top">
+        <div>
+          <h3 id="modal-titulo">Relatório Contábil — Mês 1</h3>
+          <small class="text-muted">Resultados oficiais consolidados</small>
+        </div>
+        <button id="modal-btn-close" class="modal-x">&times;</button>
       </div>
-      <div class="modal-body">
-        <div class="report-summary">
-          <div class="summary-line">
-            <span>(+) Vendas de Cerveja:</span>
-            <span id="rep-income" class="text-green">+R$ 0,00</span>
+
+      <div class="modal-content-scroll">
+        <!-- Linhas Financeiras -->
+        <div class="dre-strip">
+          <div class="dre-row positive">
+            <span>(+) Faturamento Bruto com Cerveja</span>
+            <b id="m-rec-bruta">R$ 0,00</b>
           </div>
-          <div class="summary-line">
-            <span>(-) Custos de Insumos & Malte:</span>
-            <span id="rep-prod-costs" class="text-red">-R$ 0,00</span>
+          <div class="dre-row negative">
+            <span>(-) Insumos e Brassagem (CPV)</span>
+            <b id="m-custo-insumos">-R$ 0,00</b>
           </div>
-          <div class="summary-line">
-            <span>(-) Fretes e Transporte:</span>
-            <span id="rep-freight" class="text-red">-R$ 0,00</span>
+          <div class="dre-row negative">
+            <span>(-) Fretes e Distribuição Rodoviária</span>
+            <b id="m-custo-frete">-R$ 0,00</b>
           </div>
-          <div class="summary-line">
-            <span>(-) Investimento em Marketing:</span>
-            <span id="rep-marketing" class="text-red">-R$ 0,00</span>
+          <div class="dre-row negative">
+            <span>(-) Aluguel de Galpões & Armazenagem</span>
+            <b id="m-custo-galpao">-R$ 0,00</b>
           </div>
-          <hr class="divider">
-          <div class="summary-line total">
-            <span>(=) Lucro Líquido do Mês:</span>
-            <span id="rep-net-profit">R$ 0,00</span>
+          <div class="dre-row negative">
+            <span>(-) Manutenção dos Tanques Fabris</span>
+            <b id="m-custo-manut">-R$ 0,00</b>
+          </div>
+          <div class="dre-row negative">
+            <span>(-) Publicidade e Trade Marketing</span>
+            <b id="m-custo-mkt">-R$ 0,00</b>
+          </div>
+          <hr class="dre-divider">
+          <div class="dre-row result">
+            <span>(=) LUCRO LÍQUIDO DO MÊS</span>
+            <b id="m-lucro-liquido">R$ 0,00</b>
           </div>
         </div>
 
-        <h4 style="margin: 12px 0 6px;">Desempenho por Cidade:</h4>
-        <div id="report-city-details" class="details-list"></div>
+        <h4 style="margin: 16px 0 8px;">Auditoria de Vendas por Praça:</h4>
+        <div id="modal-log-cidades" class="audit-list"></div>
       </div>
-      <button id="btn-ack-report" class="btn-primary modal-action-btn">Continuar para o Próximo Mês</button>
+
+      <button id="modal-btn-confirm" class="btn-primary full-btn">Receber Faturamento & Continuar</button>
     </div>
   </div>
 
