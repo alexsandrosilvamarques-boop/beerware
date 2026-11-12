@@ -1,19 +1,31 @@
 /**
- * BEERWARE — ORQUESTRADOR PRINCIPAL
- * Etapa 2: Integração de Estado, Persistência e Atualização do HUD
+ * BEERWARE — ORQUESTRADOR
+ * Responsabilidade: Inicializar dependências, navegação de abas e atualizar o HUD.
  */
 
-import { state } from "./state.js";
+document.addEventListener("DOMContentLoaded", () => {
+  // Verificação de Segurança de Carregamento
+  if (!window.BeerwareData || !window.BeerwareState) {
+    const banner = document.createElement("div");
+    banner.style = "position:fixed;top:0;left:0;right:0;background:#b91c1c;color:#fff;padding:16px;z-index:9999;font-weight:bold;text-align:center;";
+    banner.innerHTML = "❌ ERRO: O arquivo <code>js/data.js</code> ou <code>js/state.js</code> não foi encontrado!<br>Verifique se eles foram criados exatamente dentro da pasta <b>js/</b>.";
+    document.body.appendChild(banner);
+    return;
+  }
 
-function atualizarHUD() {
-  const dados = state.get();
-  document.getElementById("val-caixa").textContent = `R$ ${dados.caixa.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
-  document.getElementById("val-patrimonio").textContent = `R$ ${state.calcularPatrimonio().toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
-  document.getElementById("val-mes").textContent = `Mês ${dados.mes}`;
-  document.getElementById("news-headline").textContent = "Cervejaria Matriz operando em São Paulo. Mercado aguarda primeira safra.";
-}
+  const State = window.BeerwareState;
+  State.carregar();
 
-function inicializarNavegacaoAbas() {
+  // 1. Atualiza Indicadores do HUD
+  function atualizarHUD() {
+    const dados = State.get();
+    document.getElementById("val-caixa").textContent = `R$ ${dados.caixa.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
+    document.getElementById("val-patrimonio").textContent = `R$ ${State.calcularPatrimonio().toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
+    document.getElementById("val-mes").textContent = `Mês ${dados.mes}`;
+    document.getElementById("news-headline").textContent = "Cervejaria Matriz operando em São Paulo. Mercado aguarda primeira safra.";
+  }
+
+  // 2. Navegação entre Abas
   const tabs = document.querySelectorAll(".nav-tab");
   const panes = document.querySelectorAll(".tab-pane");
 
@@ -27,34 +39,19 @@ function inicializarNavegacaoAbas() {
       if (targetPane) targetPane.classList.add("active");
     });
   });
-}
 
-function setupResetButton() {
+  // 3. Botão de Reset
   const btnReset = document.getElementById("btn-reset-save");
   if (btnReset) {
     btnReset.addEventListener("click", () => {
       if (confirm("Deseja apagar todo o progresso e reiniciar o império com R$ 50.000?")) {
-        state.resetar();
+        State.resetar();
         atualizarHUD();
         alert("Império reiniciado com sucesso!");
       }
     });
   }
-}
 
-document.addEventListener("DOMContentLoaded", () => {
-  // 1. Carrega ou restaura o estado seguro
-  state.carregar();
-
-  // 2. Conecta eventos de interface
-  inicializarNavegacaoAbas();
-  setupResetButton();
-
-  // 3. Renderiza o topo
   atualizarHUD();
-
-  // Expõe no window apenas para facilitar inspeção nos testes da Etapa 2
-  window.__stateDebug = state;
-
-  console.log("🍺 Beerware — Etapa 2 concluída com sucesso. Estado carregado:", state.get());
+  console.log("🍺 Beerware pronto! Módulos carregados com sucesso.");
 });
