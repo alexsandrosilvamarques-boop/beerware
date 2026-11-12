@@ -1,0 +1,15 @@
+{}{
+  "app_title": "Beerware: O Império da Cerveja (v0.1)",
+  "cash": "Saldo:",
+  "turn": "Mês:",
+  "reputation": "Reputação:",
+  "btn_next_turn": "Avançar Mês (Passar Turno)",
+  "factories": "Fábricas Instaladas",
+  "build_factory": "Construir Fábrica (R$ 20.000)",
+  "dispatch_beer": "Distribuir Cerveja",
+  "log_title": "Relatório de Atividades",
+  "select_beer": "Cerveja:",
+  "select_target": "Cidade Destino:",
+  "send_btn": "Enviar Carga",
+  "cost_label": "Custo de Transporte Estimado:"
+}

@@ -1,0 +1,15 @@
+{}{
+  "app_title": "Beerware: The Beer Empire (v0.1)",
+  "cash": "Cash:",
+  "turn": "Month:",
+  "reputation": "Reputation:",
+  "btn_next_turn": "Next Turn (Advance Month)",
+  "factories": "Breweries",
+  "build_factory": "Build Brewery ($ 20,000)",
+  "dispatch_beer": "Dispatch Beer",
+  "log_title": "Activity Report",
+  "select_beer": "Beer:",
+  "select_target": "Destination City:",
+  "send_btn": "Ship Stock",
+  "cost_label": "Estimated Shipping Cost:"
+}
