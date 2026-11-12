@@ -1,0 +1,50 @@
+{}[
+  {
+    "id": "sp",
+    "nome": "São Paulo",
+    "populacao": 12000000,
+    "demandaBase": 500,
+    "perfil": {
+      "preferenciaSabor": 8,
+      "preferenciaForca": 6,
+      "toleranciaPreco": 18.0
+    },
+    "distancias": {
+      "sp": 0,
+      "rj": 430,
+      "bh": 580
+    }
+  },
+  {
+    "id": "rj",
+    "nome": "Rio de Janeiro",
+    "populacao": 6700000,
+    "demandaBase": 350,
+    "perfil": {
+      "preferenciaSabor": 5,
+      "preferenciaForca": 4,
+      "toleranciaPreco": 14.0
+    },
+    "distancias": {
+      "sp": 430,
+      "rj": 0,
+      "bh": 440
+    }
+  },
+  {
+    "id": "bh",
+    "nome": "Belo Horizonte",
+    "populacao": 2500000,
+    "demandaBase": 300,
+    "perfil": {
+      "preferenciaSabor": 9,
+      "preferenciaForca": 8,
+      "toleranciaPreco": 12.0
+    },
+    "distancias": {
+      "sp": 580,
+      "rj": 440,
+      "bh": 0
+    }
+  }
+]

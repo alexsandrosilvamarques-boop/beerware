@@ -1,0 +1,26 @@
+{}[
+  {
+    "id": "carnaval",
+    "titulo": "Carnaval Nacional",
+    "descricao": "As vendas explodiram nas capitais litorâneas!",
+    "chance": 0.20,
+    "modificadorDemanda": 1.5,
+    "cidadesAfetadas": ["rj", "sp"]
+  },
+  {
+    "id": "greve_caminhoneiros",
+    "titulo": "Greve nos Transportes",
+    "descricao": "O frete rodoviário dobrou temporariamente.",
+    "chance": 0.15,
+    "modificadorFrete": 2.0,
+    "cidadesAfetadas": ["all"]
+  },
+  {
+    "id": "festival_craft",
+    "titulo": "Festival de Cerveja Artesanal",
+    "descricao": "Consumidores estão exigindo sabores mais refinados.",
+    "chance": 0.15,
+    "bonusSabor": 2.0,
+    "cidadesAfetadas": ["bh"]
+  }
+]

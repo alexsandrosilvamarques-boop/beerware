@@ -1,0 +1,29 @@
+{}[
+  {
+    "id": "pilsen_popular",
+    "nome": "Loirinha do Povo",
+    "tipo": "Pilsen",
+    "sabor": 4,
+    "forca": 4,
+    "custoProducao": 2.50,
+    "precoVendaPadrao": 7.00
+  },
+  {
+    "id": "ipa_serra",    
+    "nome": "Lúpulo da Serra",
+    "tipo": "IPA",
+    "sabor": 9,
+    "forca": 7,
+    "custoProducao": 5.50,
+    "precoVendaPadrao": 16.00
+  },
+  {
+    "id": "bock_inverno",
+    "nome": "Bock Imperial",
+    "tipo": "Bock",
+    "sabor": 8,
+    "forca": 9,
+    "custoProducao": 6.00,
+    "precoVendaPadrao": 18.00
+  }
+]
