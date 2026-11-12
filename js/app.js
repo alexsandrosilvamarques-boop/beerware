@@ -1,22 +1,20 @@
 /**
  * BEERWARE — ORQUESTRADOR
- * Responsabilidade: Inicializar dependências, navegação de abas e atualizar o HUD.
+ * Etapa 3: Integração do Sistema de Áudio Tátil
  */
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Verificação de Segurança de Carregamento
-  if (!window.BeerwareData || !window.BeerwareState) {
-    const banner = document.createElement("div");
-    banner.style = "position:fixed;top:0;left:0;right:0;background:#b91c1c;color:#fff;padding:16px;z-index:9999;font-weight:bold;text-align:center;";
-    banner.innerHTML = "❌ ERRO: O arquivo <code>js/data.js</code> ou <code>js/state.js</code> não foi encontrado!<br>Verifique se eles foram criados exatamente dentro da pasta <b>js/</b>.";
-    document.body.appendChild(banner);
+  // Verificação de Dependências
+  if (!window.BeerwareData || !window.BeerwareState || !window.BeerwareAudio) {
+    console.error("Módulos ausentes na inicialização.");
     return;
   }
 
   const State = window.BeerwareState;
+  const Audio = window.BeerwareAudio;
+
   State.carregar();
 
-  // 1. Atualiza Indicadores do HUD
   function atualizarHUD() {
     const dados = State.get();
     document.getElementById("val-caixa").textContent = `R$ ${dados.caixa.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`;
@@ -25,12 +23,14 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("news-headline").textContent = "Cervejaria Matriz operando em São Paulo. Mercado aguarda primeira safra.";
   }
 
-  // 2. Navegação entre Abas
+  // Navegação de Abas com Feedback Sonoro Tátil
   const tabs = document.querySelectorAll(".nav-tab");
   const panes = document.querySelectorAll(".tab-pane");
 
   tabs.forEach(tab => {
     tab.addEventListener("click", () => {
+      Audio.click(); // 🔊 Som de clique retrô
+
       tabs.forEach(t => t.classList.remove("active"));
       panes.forEach(p => p.classList.remove("active"));
 
@@ -40,18 +40,27 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // 3. Botão de Reset
+  // Botão de Teste de Moeda no "Passar Mês" (temporário até a simulação entrar)
+  const btnNext = document.getElementById("btn-next-turn");
+  if (btnNext) {
+    btnNext.addEventListener("click", () => {
+      Audio.coin(); // 🔊 Som de moedas
+    });
+  }
+
+  // Botão de Reset
   const btnReset = document.getElementById("btn-reset-save");
   if (btnReset) {
     btnReset.addEventListener("click", () => {
-      if (confirm("Deseja apagar todo o progresso e reiniciar o império com R$ 50.000?")) {
+      Audio.alert(); // 🔊 Som de alerta
+      if (confirm("Deseja apagar todo o progresso e reiniciar com R$ 50.000?")) {
         State.resetar();
         atualizarHUD();
-        alert("Império reiniciado com sucesso!");
+        Audio.fanfarra(); // 🔊 Fanfarra de reinício
       }
     });
   }
 
   atualizarHUD();
-  console.log("🍺 Beerware pronto! Módulos carregados com sucesso.");
+  console.log("🍺 Beerware — Etapa 3 pronta. Áudio procedural ativado!");
 });
