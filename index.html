@@ -2,78 +2,122 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Beerware</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Beerware — O Império da Cerveja</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div id="window-frame">
-    <!-- Barra Superior Retrô -->
-    <div class="title-bar">
-      <span id="txt-app-title">Beerware</span>
-      <div class="title-bar-controls">
-        <button>?</button>
-        <button>X</button>
-      </div>
+  <!-- Topo: HUD Financeiro e de Tempo -->
+  <header class="hud-bar">
+    <div class="hud-item cash">
+      <span class="hud-label">CAIXA</span>
+      <span class="hud-val" id="hud-cash">R$ 50.000</span>
     </div>
-
-    <!-- Indicadores Financeiros e de Tempo -->
-    <div class="top-bar">
-      <div class="stat-box"><span id="txt-cash">Saldo:</span> <span id="val-cash">R$ 0</span></div>
-      <div class="stat-box"><span id="txt-turn">Mês:</span> <span id="val-turn">1</span></div>
-      <div class="stat-box"><span id="txt-reputation">Reputação:</span> <span id="val-reputation">50%</span></div>
-      <button id="btn-advance-turn" style="margin-left: auto;">Avançar Mês</button>
+    <div class="hud-item profit">
+      <span class="hud-label">LUCRO MÊS ANT.</span>
+      <span class="hud-val" id="hud-last-profit">+R$ 0</span>
     </div>
-
-    <!-- Painéis do Jogo -->
-    <div class="main-content">
-      
-      <!-- Painel de Expansão e Fábricas -->
-      <fieldset>
-        <legend id="txt-factories">Fábricas Instaladas</legend>
-        <div id="factory-list">Nenhuma fábrica construída.</div>
-        <hr style="border: 1px inset #fff; margin: 8px 0;">
-        <div class="form-group">
-          <label>Cidade:</label>
-          <select id="select-factory-city"></select>
-          <button id="btn-build-factory">Construir Fábrica</button>
-        </div>
-      </fieldset>
-
-      <!-- Painel de Logística e Vendas -->
-      <fieldset>
-        <legend id="txt-dispatch">Logística e Despacho</legend>
-        <div class="form-group">
-          <label id="txt-select-beer">Cerveja:</label>
-          <select id="select-beer"></select>
-        </div>
-        <div class="form-group">
-          <label>Fábrica Origem:</label>
-          <select id="select-source-factory"></select>
-        </div>
-        <div class="form-group">
-          <label id="txt-select-target">Destino:</label>
-          <select id="select-target-city"></select>
-        </div>
-        <div class="form-group">
-          <label>Quantidade (Barril):</label>
-          <input type="number" id="input-amount" value="100" min="10" step="10" style="width: 70px;">
-        </div>
-        <div class="form-group">
-          <span id="txt-frete-estimado">Frete: R$ 0.00</span>
-          <button id="btn-dispatch">Enviar Carga</button>
-        </div>
-      </fieldset>
-
-      <!-- Log de Operações -->
-      <fieldset class="full-width">
-        <legend id="txt-log-title">Relatório de Atividades</legend>
-        <div class="log-box" id="game-logs"></div>
-      </fieldset>
-
+    <div class="hud-item rep">
+      <span class="hud-label">REPUTAÇÃO</span>
+      <span class="hud-val" id="hud-rep">50★</span>
     </div>
+    <div class="hud-item month">
+      <span class="hud-label">MÊS</span>
+      <span class="hud-val" id="hud-month">1</span>
+    </div>
+    <button id="btn-next-turn" class="btn-primary turn-btn">
+      <span>Passar Mês ⏩</span>
+    </button>
+  </header>
+
+  <!-- Banner de Notícias Vivas (Ticker de Eventos) -->
+  <div class="news-ticker">
+    <span class="ticker-badge">EXTRA:</span>
+    <span id="news-text">Mercado cervejeiro nacional em expansão. Oportunidades à vista!</span>
   </div>
 
-  <script type="module" src="game.js"></script>
+  <!-- Navegação por Abas (Mobile-Friendly) -->
+  <nav class="nav-tabs">
+    <button class="tab-btn active" data-tab="tab-mercado">🗺️ Cidades & Mercado</button>
+    <button class="tab-btn" data-tab="tab-fabricas">🏭 Fábricas & Estoque</button>
+    <button class="tab-btn" data-tab="tab-logistica">🚚 Logística & Vendas</button>
+    <button class="tab-btn" data-tab="tab-noticias">📜 Relatórios</button>
+  </nav>
+
+  <!-- Conteúdo Principal -->
+  <main class="main-screen">
+
+    <!-- ABA 1: CIDADES E MERCADO -->
+    <section id="tab-mercado" class="tab-content active">
+      <div class="section-title">Praças de Consumo no Brasil</div>
+      <div class="cities-grid" id="cities-container">
+        <!-- Renderizado dinamicamente via JS -->
+      </div>
+    </section>
+
+    <!-- ABA 2: FÁBRICAS E PRODUÇÃO -->
+    <section id="tab-fabricas" class="tab-content">
+      <div class="panel">
+        <div class="panel-header">
+          <h3>Suas Cervejarias</h3>
+          <button id="btn-open-modal-build" class="btn-accent">+ Construir Fábrica (R$ 20.000)</button>
+        </div>
+        <div id="breweries-container" class="cards-list">
+          <!-- Renderizado dinamicamente -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ABA 3: LOGÍSTICA E DESPACHO -->
+    <section id="tab-logistica" class="tab-content">
+      <div class="panel logistic-panel">
+        <h3>Despachar Cerveja para Distribuição</h3>
+        <p class="panel-desc">Envie seu estoque para os bares e supermercados das capitais antes do fechamento do mês.</p>
+        
+        <div class="form-grid">
+          <div class="field">
+            <label>Fábrica de Origem:</label>
+            <select id="log-source"></select>
+          </div>
+          <div class="field">
+            <label>Cerveja em Estoque:</label>
+            <select id="log-beer"></select>
+          </div>
+          <div class="field">
+            <label>Cidade Destino:</label>
+            <select id="log-target"></select>
+          </div>
+          <div class="field">
+            <label>Quantidade (Barris):</label>
+            <input type="number" id="log-amount" value="50" min="10" step="10">
+          </div>
+        </div>
+
+        <div class="log-estimate">
+          <div>Frete Calculado: <b id="est-frete">R$ 0,00</b></div>
+          <div>Faturamento Potencial: <b id="est-receita" class="text-gold">R$ 0,00</b></div>
+        </div>
+
+        <button id="btn-dispatch-beer" class="btn-primary full-width">Despachar Caminhão 🚛</button>
+
+        <div class="pending-dispatches">
+          <h4>Cargas a Caminho (Venda neste mês):</h4>
+          <ul id="dispatch-queue-list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABA 4: RELATÓRIOS E LOGS -->
+    <section id="tab-noticias" class="tab-content">
+      <div class="panel">
+        <h3>Histórico e Inteligência Comercial</h3>
+        <div class="terminal-log" id="game-logs"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="game.js"></script>
 </body>
 </html>
