@@ -1,3 +1,18 @@
+Excelente. Com o **`PLANO.md`** formalizado como nosso contrato de arquitetura, vamos iniciar rigorosamente pela **Etapa 1: Esqueleto & Identidade Visual**.
+
+---
+
+### Objetivos da Etapa 1
+1. **Estrutura HTML limpa (`index.html`):** Apenas os contêineres semânticos e pontos de injeção dos futuros módulos (sem dados fixos de regras de jogo).
+2. **Design System Industrial/Dark (`style.css`):** Paleta inspirada em cervejaria/latão de brassagem (carvão, âmbar/malte, ardósia e verde contábil), 100% responsivo para celulares e monitores.
+3. **Ponto de Entrada ES6 (`js/app.js`):** Um arquivo mínimo apenas para navegação de abas e validação do `<script type="module">`.
+
+---
+
+### 1. `index.html`
+Substitua o conteúdo do seu `index.html`:
+
+```html
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -8,76 +23,81 @@
 </head>
 <body>
 
-  <!-- Topo Fixo: Balanço Geral & Tempo -->
+  <!-- Topo Fixo: HUD de Indicadores e Botão Mestre -->
   <header class="hud-top">
     <div class="hud-group">
       <div class="hud-cell cash">
         <span class="hud-tag">CAIXA LIVRE</span>
-        <span id="val-caixa" class="hud-main">R$ 50.000</span>
+        <span id="val-caixa" class="hud-main">R$ --</span>
       </div>
       <div class="hud-cell networth">
-        <span class="hud-tag">PATRIMÔNIO TOTAL</span>
-        <span id="val-patrimonio" class="hud-main">R$ 75.000</span>
+        <span class="hud-tag">PATRIMÔNIO</span>
+        <span id="val-patrimonio" class="hud-main">R$ --</span>
       </div>
       <div class="hud-cell month">
-        <span class="hud-tag">MÊS DE OPERAÇÃO</span>
-        <span id="val-mes" class="hud-main">Mês 1</span>
+        <span class="hud-tag">MÊS</span>
+        <span id="val-mes" class="hud-main">--</span>
       </div>
     </div>
 
     <button id="btn-next-turn" class="btn-turn">
       <span>Passar Mês ⏩</span>
-      <small id="lbl-turn-sub">Executar Vendas</small>
+      <small>Executar Vendas</small>
     </button>
   </header>
 
   <!-- Noticiário Industrial -->
   <div class="news-banner">
     <span class="news-pill">MERCADO</span>
-    <span id="news-headline">Início das operações. As cervejarias artesanais disputam o paladar dos brasileiros.</span>
+    <span id="news-headline">Carregando indicadores do setor cervejeiro nacional...</span>
   </div>
 
-  <!-- Barra de Abas -->
+  <!-- Barra de Navegação por Abas -->
   <nav class="nav-bar">
-    <button class="nav-tab active" data-tab="tab-mercados">🗺️ Praças & Demanda</button>
-    <button class="nav-tab" data-tab="tab-fabricas">🏭 Fábricas & Galpões</button>
-    <button class="nav-tab" data-tab="tab-dre">📊 Balanço & DRE</button>
-    <button class="nav-tab" data-tab="tab-metas">🏆 Metas & Prêmios <span id="badge-metas" class="badge hidden">0</span></button>
-    <button class="nav-tab" data-tab="tab-precos">🍺 Preços & Fórmulas</button>
+    <button class="nav-tab active" data-tab="tab-mercados">🗺️ Praças</button>
+    <button class="nav-tab" data-tab="tab-fabricas">🏭 Fábricas</button>
+    <button class="nav-tab" data-tab="tab-dre">📊 Balanço</button>
+    <button class="nav-tab" data-tab="tab-metas">🏆 Metas <span id="badge-metas" class="badge hidden">0</span></button>
+    <button class="nav-tab" data-tab="tab-precos">🍺 Preços</button>
   </nav>
 
+  <!-- Área Principal de Visualização -->
   <main class="main-wrapper">
 
-    <!-- ABA 1: PRAÇAS E DEMANDA -->
+    <!-- ABA 1: PRAÇAS E MERCADOS -->
     <section id="tab-mercados" class="tab-pane active">
       <div class="pane-head">
         <h2>Centros de Consumo Nacional</h2>
-        <p>Defina o plano de remessa mensal para cada cidade. Cuidado para não deixar faltar nem mandar cerveja errada para o perfil do público!</p>
+        <p>Demanda populacional, perfil sociocultural de consumo e logística.</p>
       </div>
-      <div id="grid-cidades" class="cards-layout"></div>
+      <div id="grid-cidades" class="cards-layout">
+        <p class="placeholder-text">Aguardando inicialização do módulo de dados...</p>
+      </div>
     </section>
 
-    <!-- ABA 2: FÁBRICAS E TANQUES -->
+    <!-- ABA 2: FÁBRICAS E CAPACIDADE -->
     <section id="tab-fabricas" class="tab-pane">
       <div class="pane-head flex-split">
         <div>
-          <h2>Parque Fabril & Capacidade Instalada</h2>
-          <p>Gerencie tanques de fermentação, estoque em galpão e ordens de brassagem mensal.</p>
+          <h2>Parque Fabril & Capacidade</h2>
+          <p>Tanques de brassagem e estoque físico em galpão.</p>
         </div>
-        <button id="btn-nova-fabrica" class="btn-accent">+ Construir Cervejaria (R$ 30.000)</button>
+        <button id="btn-nova-fabrica" class="btn-accent">+ Nova Fábrica</button>
       </div>
-      <div id="grid-fabricas" class="cards-layout"></div>
+      <div id="grid-fabricas" class="cards-layout">
+        <p class="placeholder-text">Aguardando inicialização do parque fabril...</p>
+      </div>
     </section>
 
-    <!-- ABA 3: BALANÇO E DRE -->
+    <!-- ABA 3: BALANÇO CONTÁBIL (DRE) -->
     <section id="tab-dre" class="tab-pane">
       <div class="pane-head">
         <h2>Demonstrativo de Resultados do Exercício (DRE)</h2>
-        <p>Acompanhamento contábil auditado das suas receitas, custos operacionais e margens.</p>
+        <p>Receitas auditadas, custos operacionais e margem líquida consolidada.</p>
       </div>
       <div class="dre-panel">
-        <div id="dre-container" class="dre-table">
-          <p class="text-muted">Nenhum mês fechado ainda. Clique em "Passar Mês" para emitir o primeiro balanço.</p>
+        <div id="dre-container">
+          <p class="placeholder-text">Nenhum mês fechado ainda.</p>
         </div>
       </div>
     </section>
@@ -86,62 +106,65 @@
     <section id="tab-metas" class="tab-pane">
       <div class="pane-head">
         <h2>Metas de Expansão & Recompensas</h2>
-        <p>Bata objetivos de mercado e descarregue injeções de capital de investidores e bônus da indústria.</p>
+        <p>Bata objetivos de mercado para receber aportes de capital.</p>
       </div>
-      <div id="grid-metas" class="metas-layout"></div>
+      <div id="grid-metas" class="metas-layout">
+        <p class="placeholder-text">Carregando objetivos estratégicos...</p>
+      </div>
     </section>
 
-    <!-- ABA 5: PREÇOS E FÓRMULAS -->
+    <!-- ABA 5: CATÁLOGO DE PREÇOS -->
     <section id="tab-precos" class="tab-pane">
       <div class="pane-head">
         <h2>Catálogo de Cervejas & Precificação</h2>
-        <p>Ajuste o valor que o consumidor paga na prateleira. Preço alto demais espanta clientes em cidades populares.</p>
+        <p>Definição de preço nas prateleiras e margem bruta por fórmula.</p>
       </div>
-      <div id="grid-cervejas" class="cards-layout"></div>
+      <div id="grid-cervejas" class="cards-layout">
+        <p class="placeholder-text">Carregando receitas cadastradas...</p>
+      </div>
 
       <div class="reset-box">
-        <button id="btn-reset-save" class="btn-outline-danger">⚠️ Reiniciar Império (Apagar Progresso Salvo)</button>
+        <button id="btn-reset-save" class="btn-outline-danger">⚠️ Reiniciar Império (Apagar Salve)</button>
       </div>
     </section>
 
   </main>
 
-  <!-- MODAL: BALANÇO MENSAL AUDITADO -->
+  <!-- MODAL: BALANÇO MENSAL AUDITADO (Inicialmente oculto) -->
   <div id="modal-balanco" class="modal-backdrop hidden">
     <div class="modal-box">
       <div class="modal-top">
         <div>
-          <h3 id="modal-titulo">Relatório Contábil — Mês 1</h3>
+          <h3 id="modal-titulo">Relatório Contábil</h3>
           <small class="text-muted">Resultados oficiais consolidados</small>
         </div>
-        <button id="modal-btn-close" class="modal-x">&times;</button>
+        <button id="modal-btn-close" class="modal-x" aria-label="Fechar">&times;</button>
       </div>
 
       <div class="modal-content-scroll">
-        <!-- Linhas Financeiras -->
         <div class="dre-strip">
           <div class="dre-row positive">
-            <span>(+) Faturamento Bruto com Cerveja</span>
+            <span>(+) Faturamento Bruto</span>
             <b id="m-rec-bruta">R$ 0,00</b>
           </div>
           <div class="dre-row negative">
-            <span>(-) Insumos e Brassagem (CPV)</span>
+            <span>(-) Insumos e Brassagem</span>
             <b id="m-custo-insumos">-R$ 0,00</b>
           </div>
           <div class="dre-row negative">
-            <span>(-) Fretes e Distribuição Rodoviária</span>
+            <span>(-) Fretes e Distribuição</span>
             <b id="m-custo-frete">-R$ 0,00</b>
           </div>
           <div class="dre-row negative">
-            <span>(-) Aluguel de Galpões & Armazenagem</span>
+            <span>(-) Armazenagem de Sobras</span>
             <b id="m-custo-galpao">-R$ 0,00</b>
           </div>
           <div class="dre-row negative">
-            <span>(-) Manutenção dos Tanques Fabris</span>
+            <span>(-) Manutenção Fabril</span>
             <b id="m-custo-manut">-R$ 0,00</b>
           </div>
           <div class="dre-row negative">
-            <span>(-) Publicidade e Trade Marketing</span>
+            <span>(-) Trade Marketing</span>
             <b id="m-custo-mkt">-R$ 0,00</b>
           </div>
           <hr class="dre-divider">
@@ -151,7 +174,7 @@
           </div>
         </div>
 
-        <h4 style="margin: 16px 0 8px;">Auditoria de Vendas por Praça:</h4>
+        <h4 style="margin: 14px 0 6px;">Auditoria de Vendas por Praça:</h4>
         <div id="modal-log-cidades" class="audit-list"></div>
       </div>
 
@@ -159,7 +182,7 @@
     </div>
   </div>
 
-  <script src="config.js"></script>
-  <script src="game.js"></script>
+  <!-- Ponto de Entrada da Arquitetura Modular (ES6) -->
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>
