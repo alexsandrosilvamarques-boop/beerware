@@ -1,5 +1,5 @@
 /**
- * BEERWARE TYCOON ENGINE — V3
+ * BEERWARE TYCOON ENGINE — V3 (COMPLETO)
  * Capacidade instalada real, estoque acumulativo, demografia regional,
  * DRE contábil, sistema de metas auditadas e salvamento contínuo.
  */
@@ -200,7 +200,6 @@ class TycoonGame {
     document.getElementById('val-patrimonio').textContent = `R$ ${this.calcularPatrimonio().toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
     document.getElementById('val-mes').textContent = `Mês ${this.dados.mes}`;
 
-    // Badge de metas prontas
     const prontas = this.dados.metas.filter(m => m.status === "pronta").length;
     const badge = document.getElementById('badge-metas');
     if (prontas > 0) {
@@ -442,7 +441,7 @@ class TycoonGame {
       fab.ordemBrassagem[bevId] = parseInt(val, 10);
       inputEl.previousElementSibling.lastElementChild.textContent = `${val} barris`;
       this.salvar();
-      this.renderFabricas(); // reavalia total dos tanques
+      this.renderFabricas();
     }
   }
 
@@ -522,7 +521,6 @@ class TycoonGame {
     // 1. Fabricação & Validação de Tanques
     let custoInsumos = 0;
     this.dados.fabricas.forEach(fab => {
-      // Limita ao teto da fábrica
       const totalPedido = Object.values(fab.ordemBrassagem).reduce((a, b) => a + b, 0);
       const fatorCapacidade = totalPedido > fab.capacidadeTanques ? (fab.capacidadeTanques / totalPedido) : 1;
 
@@ -554,7 +552,6 @@ class TycoonGame {
     let logsAuditoria = [];
 
     this.dados.cidades.forEach(c => {
-      // Desconta Marketing
       if (this.dados.caixa >= c.marketing) {
         this.dados.caixa -= c.marketing;
         custoMkt += c.marketing;
@@ -568,18 +565,15 @@ class TycoonGame {
         const planejado = c.remessaMensal[b.id] || 0;
         if (planejado <= 0) return;
 
-        // Limita ao que existe fisicamente nos galpões
         const despachado = Math.min(planejado, estoqueTotalDisponivel[b.id]);
         if (despachado < planejado) faltouCerveja = true;
 
         estoqueTotalDisponivel[b.id] -= despachado;
 
-        // Custo de frete por barril despachado
         const frete = Math.round(despachado * 0.85);
         this.dados.caixa -= frete;
         custoFrete += frete;
 
-        // Simulação Cultural de Demanda
         const afinidade = c.afinidades[b.id] || 1.0;
         const fatorPreco = b.preco <= c.toleranciaPreco 
           ? 1.0 
@@ -597,12 +591,10 @@ class TycoonGame {
         vendidosNaCidade += vendidos;
         totalBarrisVendidos += vendidos;
 
-        // O que não vendeu na cidade volta para o estoque disponível
         const sobrou = despachado - vendidos;
         estoqueTotalDisponivel[b.id] += sobrou;
       });
 
-      // Atualiza Market Share
       if (vendidosNaCidade > 150) {
         c.sharePlayer = Math.min(85, c.sharePlayer + 3);
       } else if (vendidosNaCidade === 0) {
@@ -617,10 +609,9 @@ class TycoonGame {
       `);
     });
 
-    // Devolve o estoque restante para os galpões das fábricas
-    this.dados.fabricas.forEach((fab, i) => {
+    // Devolve o estoque remanescente para os galpões das fábricas
+    this.dados.fabricas.forEach((fab) => {
       this.dados.cervejas.forEach(b => {
-        // Distribuição uniforme do estoque remanescente
         fab.galpaoEstoque[b.id] = Math.floor(estoqueTotalDisponivel[b.id] / this.dados.fabricas.length);
       });
     });
@@ -630,8 +621,8 @@ class TycoonGame {
     this.dados.fabricas.forEach(fab => {
       totalBarrisArmazenados += Object.values(fab.galpaoEstoque).reduce((a, b) => a + b, 0);
     });
-    const custoGalpao = Math.round(totalBarrisArmazenados * 0.50); // R$ 0,50 por barril parado
-    const custoManut = this.dados.fabricas.length * 800; // R$ 800 por fábrica
+    const custoGalpao = Math.round(totalBarrisArmazenados * 0.50);
+    const custoManut = this.dados.fabricas.length * 800;
 
     this.dados.caixa += recBruta;
     this.dados.caixa -= (custoGalpao + custoManut);
@@ -692,4 +683,22 @@ class TycoonGame {
     document.getElementById('m-custo-insumos').textContent = `-R$ ${dre.custoInsumos.toFixed(2)}`;
     document.getElementById('m-custo-frete').textContent = `-R$ ${dre.custoFrete.toFixed(2)}`;
     document.getElementById('m-custo-galpao').textContent = `-R$ ${dre.custoGalpao.toFixed(2)}`;
-    document.getElementById('m-custo-manut').textContent = `-R$ ${dre.custoManut.toFixed(
+    document.getElementById('m-custo-manut').textContent = `-R$ ${dre.custoManut.toFixed(2)}`;
+    document.getElementById('m-custo-mkt').textContent = `-R$ ${dre.custoMkt.toFixed(2)}`;
+
+    const elNet = document.getElementById('m-lucro-liquido');
+    elNet.textContent = `${dre.lucroLiquido >= 0 ? '+' : ''}R$ ${dre.lucroLiquido.toFixed(2)}`;
+    elNet.style.color = dre.lucroLiquido >= 0 ? "var(--green-bright)" : "var(--red)";
+
+    const containerDet = document.getElementById('modal-log-cidades');
+    containerDet.innerHTML = logs.join('');
+
+    document.getElementById('modal-balanco').classList.remove('hidden');
+  }
+}
+
+// Inicializa e expõe a classe globalmente
+window.addEventListener('DOMContentLoaded', () => {
+  window.tycoon = new TycoonGame();
+  window.tycoon.init();
+});
