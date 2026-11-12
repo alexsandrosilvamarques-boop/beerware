@@ -1,127 +1,6 @@
 /**
- * BEERWARE TYCOON ENGINE — V3 (COMPLETO)
- * Capacidade instalada real, estoque acumulativo, demografia regional,
- * DRE contábil, sistema de metas auditadas e salvamento contínuo.
+ * BEERWARE TYCOON — MOTOR PRINCIPAL DO JOGO
  */
-
-const SFX = {
-  ctx: null,
-  init() {
-    if (!this.ctx) {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      this.ctx = new AudioCtx();
-    }
-  },
-  tone(freq, type = "sine", duration = 0.1, gainVal = 0.08) {
-    try {
-      this.init();
-      if (this.ctx.state === "suspended") this.ctx.resume();
-      const osc = this.ctx.createOscillator();
-      const gain = this.ctx.createGain();
-      osc.type = type;
-      osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-      gain.gain.setValueAtTime(gainVal, this.ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
-      osc.connect(gain);
-      gain.connect(this.ctx.destination);
-      osc.start();
-      osc.stop(this.ctx.currentTime + duration);
-    } catch (e) {}
-  },
-  coin() {
-    this.tone(987, "square", 0.08);
-    setTimeout(() => this.tone(1318, "square", 0.18), 70);
-  },
-  fanfare() {
-    this.tone(523, "triangle", 0.1);
-    setTimeout(() => this.tone(659, "triangle", 0.1), 100);
-    setTimeout(() => this.tone(783, "triangle", 0.1), 200);
-    setTimeout(() => this.tone(1046, "square", 0.25), 300);
-  },
-  click() { this.tone(350, "triangle", 0.04, 0.05); },
-  alert() { this.tone(200, "sawtooth", 0.2, 0.1); }
-};
-
-const DEFAULT_GAME_DATA = {
-  caixa: 50000,
-  mes: 1,
-  historicoDRE: [],
-  cervejas: [
-    { id: "pilsen", nome: "Pilsen Puro Malte", estilo: "Leve e Refrescante", custoInsumo: 2.50, preco: 8.00, sabor: 4, forca: 4 },
-    { id: "ipa", nome: "Mantiqueira IPA", estilo: "Cítrica & Amarga", custoInsumo: 5.50, preco: 16.00, sabor: 9, forca: 7 },
-    { id: "bock", nome: "Bock Imperial", estilo: "Maltada & Alcoólica", custoInsumo: 6.80, preco: 20.00, sabor: 8, forca: 9 }
-  ],
-  cidades: [
-    {
-      id: "rj",
-      nome: "Rio de Janeiro",
-      clima: "☀️ Tropical Quente",
-      populacao: "6.7M hab.",
-      perfilTexto: "Exige cerveja leve trincando de gelada. Rejeita amargor alto e preços abusivos.",
-      demandaBase: 1400,
-      afinidades: { pilsen: 1.6, ipa: 0.5, bock: 0.3 },
-      toleranciaPreco: 14.0,
-      remessaMensal: { pilsen: 400, ipa: 0, bock: 0 },
-      marketing: 500,
-      sharePlayer: 10
-    },
-    {
-      id: "sp",
-      nome: "São Paulo",
-      clima: "🏙️ Garoa Cosmopolita",
-      populacao: "12.3M hab.",
-      perfilTexto: "Mercado gigantesco e exigente. Consome grandes volumes de IPA e paga caro por qualidade.",
-      demandaBase: 2200,
-      afinidades: { pilsen: 1.0, ipa: 1.7, bock: 1.1 },
-      toleranciaPreco: 22.0,
-      remessaMensal: { pilsen: 300, ipa: 200, bock: 0 },
-      marketing: 1000,
-      sharePlayer: 15
-    },
-    {
-      id: "bh",
-      nome: "Belo Horizonte",
-      clima: "🍻 Capital dos Botecos",
-      populacao: "2.5M hab.",
-      perfilTexto: "Cultura botequeira raíz. Busca o equilíbrio entre sabor de malte e preço justo.",
-      demandaBase: 1100,
-      afinidades: { pilsen: 1.2, ipa: 1.1, bock: 0.8 },
-      toleranciaPreco: 15.0,
-      remessaMensal: { pilsen: 100, ipa: 0, bock: 0 },
-      marketing: 300,
-      sharePlayer: 10
-    },
-    {
-      id: "cwb",
-      nome: "Curitiba",
-      clima: "❄️ Frio Serrano",
-      populacao: "1.9M hab.",
-      perfilTexto: "Inverno rigoroso. O público adora estilos encorpados, torrados e com alto teor alcoólico.",
-      demandaBase: 900,
-      afinidades: { pilsen: 0.7, ipa: 1.2, bock: 1.8 },
-      toleranciaPreco: 19.0,
-      remessaMensal: { pilsen: 0, ipa: 0, bock: 150 },
-      marketing: 300,
-      sharePlayer: 10
-    }
-  ],
-  fabricas: [
-    {
-      id: "fab_sp",
-      cidadeId: "sp",
-      capacidadeTanques: 1000,
-      nivelTanques: 1,
-      galpaoEstoque: { pilsen: 100, ipa: 50, bock: 0 },
-      ordemBrassagem: { pilsen: 600, ipa: 300, bock: 100 }
-    }
-  ],
-  metas: [
-    { id: "m1", titulo: "Primeira Fornada", desc: "Produzir e vender 500 barris no total em um único mês.", meta: 500, progresso: 0, premio: 8000, status: "ativa" },
-    { id: "m2", titulo: "Invasão Carioca", desc: "Alcançar 25% de Market Share no Rio de Janeiro.", meta: 25, progresso: 10, premio: 15000, status: "ativa" },
-    { id: "m3", titulo: "Barão do Malte", desc: "Acumular R$ 100.000 em caixa livre.", meta: 100000, progresso: 50000, premio: 25000, status: "ativa" },
-    { id: "m4", titulo: "Império Nacional", desc: "Instalar fábricas em 3 cidades diferentes.", meta: 3, progresso: 1, premio: 40000, status: "ativa" }
-  ]
-};
 
 class TycoonGame {
   constructor() {
@@ -175,15 +54,6 @@ class TycoonGame {
     document.getElementById('modal-btn-confirm').addEventListener('click', fecharM);
   }
 
-  atualizarTudo() {
-    this.atualizarHUD();
-    this.renderCidades();
-    this.renderFabricas();
-    this.renderDRE();
-    this.renderMetas();
-    this.renderPrecos();
-  }
-
   calcularPatrimonio() {
     let valorEstoque = 0;
     this.dados.fabricas.forEach(f => {
@@ -193,6 +63,15 @@ class TycoonGame {
     });
     const valorImobilizado = this.dados.fabricas.length * 30000;
     return this.dados.caixa + valorEstoque + valorImobilizado;
+  }
+
+  atualizarTudo() {
+    this.atualizarHUD();
+    this.renderCidades();
+    this.renderFabricas();
+    this.renderDRE();
+    this.renderMetas();
+    this.renderPrecos();
   }
 
   atualizarHUD() {
@@ -209,8 +88,6 @@ class TycoonGame {
       badge.classList.add('hidden');
     }
   }
-
-  // --- RENDERIZADORES ---
 
   renderCidades() {
     const grid = document.getElementById('grid-cidades');
@@ -240,7 +117,7 @@ class TycoonGame {
         </div>
 
         <div class="info-box">
-          <b>Plano de Remessa Mensal (Barris a Enviar):</b>
+          <b>Plano de Remessa Mensal:</b>
           ${this.dados.cervejas.map(b => `
             <div class="control-field" style="margin-top: 4px;">
               <div class="control-head">
@@ -284,14 +161,13 @@ class TycoonGame {
             <div style="font-size:0.75rem; color:var(--text-muted);">Tanques Nível ${f.nivelTanques}</div>
           </div>
           <button class="btn-accent" style="padding:4px 8px; font-size:0.7rem;" onclick="window.tycoon.expandirTanques('${f.id}')">
-            + Expansão de Tanques (+500 un)
-            <br><small>R$ 15.000</small>
+            + Expansão (+500 un)<br><small>R$ 15.000</small>
           </button>
         </div>
 
         <div class="info-box">
           <div style="display:flex; justify-content:space-between; font-weight:800;">
-            <span>Uso dos Tanques de Fermentação:</span>
+            <span>Uso dos Tanques:</span>
             <span style="color:${totalBrassagem > f.capacidadeTanques ? 'var(--red)' : 'var(--amber-bright)'};">
               ${totalBrassagem} / ${f.capacidadeTanques} barris (${percOcupacao}%)
             </span>
@@ -302,7 +178,7 @@ class TycoonGame {
         </div>
 
         <div>
-          <b>Programar Brassagem Mensal (Produção):</b>
+          <b>Programar Brassagem Mensal:</b>
           ${this.dados.cervejas.map(b => `
             <div class="control-field" style="margin-top:4px;">
               <div class="control-head">
@@ -316,7 +192,7 @@ class TycoonGame {
         </div>
 
         <div class="info-box" style="background:#0c0f13;">
-          <b>Estoque no Galpão (Armazenado):</b>
+          <b>Estoque no Galpão:</b>
           <div style="display:flex; justify-content:space-around; margin-top:4px;">
             ${this.dados.cervejas.map(b => `
               <div>${b.nome.split(' ')[0]}: <b style="color:var(--green-bright);">${f.galpaoEstoque[b.id] || 0} un</b></div>
@@ -399,11 +275,11 @@ class TycoonGame {
       <div class="dre-strip">
         <div style="font-weight:900; font-size:1rem; margin-bottom:8px;">Balanço Auditado do Mês ${ult.mes}</div>
         <div class="dre-row positive"><span>(+) Receita Bruta de Vendas</span><b>R$ ${ult.recBruta.toFixed(2)}</b></div>
-        <div class="dre-row negative"><span>(-) Custos de Brassagem & Malte (CPV)</span><b>-R$ ${ult.custoInsumos.toFixed(2)}</b></div>
-        <div class="dre-row negative"><span>(-) Fretes e Transporte Rodoviário</span><b>-R$ ${ult.custoFrete.toFixed(2)}</b></div>
-        <div class="dre-row negative"><span>(-) Armazenagem de Sobras de Galpão</span><b>-R$ ${ult.custoGalpao.toFixed(2)}</b></div>
-        <div class="dre-row negative"><span>(-) Manutenção dos Tanques Fabris</span><b>-R$ ${ult.custoManut.toFixed(2)}</b></div>
-        <div class="dre-row negative"><span>(-) Investimento em Publicidade Regional</span><b>-R$ ${ult.custoMkt.toFixed(2)}</b></div>
+        <div class="dre-row negative"><span>(-) Custos de Insumos (CPV)</span><b>-R$ ${ult.custoInsumos.toFixed(2)}</b></div>
+        <div class="dre-row negative"><span>(-) Fretes e Transporte</span><b>-R$ ${ult.custoFrete.toFixed(2)}</b></div>
+        <div class="dre-row negative"><span>(-) Armazenagem de Sobras</span><b>-R$ ${ult.custoGalpao.toFixed(2)}</b></div>
+        <div class="dre-row negative"><span>(-) Manutenção dos Tanques</span><b>-R$ ${ult.custoManut.toFixed(2)}</b></div>
+        <div class="dre-row negative"><span>(-) Investimento em Publicidade</span><b>-R$ ${ult.custoMkt.toFixed(2)}</b></div>
         <hr class="dre-divider">
         <div class="dre-row result">
           <span>(=) RESULTADO LÍQUIDO DO EXERCÍCIO</span>
@@ -414,8 +290,6 @@ class TycoonGame {
       </div>
     `;
   }
-
-  // --- CONTROLES EM TEMPO REAL ---
 
   setRemessa(cidId, bevId, val, inputEl) {
     const cid = this.dados.cidades.find(c => c.id === cidId);
@@ -513,12 +387,10 @@ class TycoonGame {
     }
   }
 
-  // --- MOTOR ECONÔMICO PRINCIPAL (VIRADA DO MÊS) ---
-
   fecharMes() {
     SFX.coin();
 
-    // 1. Fabricação & Validação de Tanques
+    // 1. Fabricação
     let custoInsumos = 0;
     this.dados.fabricas.forEach(fab => {
       const totalPedido = Object.values(fab.ordemBrassagem).reduce((a, b) => a + b, 0);
@@ -536,7 +408,7 @@ class TycoonGame {
       });
     });
 
-    // 2. Coleta de Estoque Central para Distribuição
+    // 2. Coleta de Estoque Central
     let estoqueTotalDisponivel = { pilsen: 0, ipa: 0, bock: 0 };
     this.dados.fabricas.forEach(fab => {
       this.dados.cervejas.forEach(b => {
@@ -544,7 +416,7 @@ class TycoonGame {
       });
     });
 
-    // 3. Distribuição & Vendas por Cidade
+    // 3. Distribuição & Vendas
     let recBruta = 0;
     let custoFrete = 0;
     let custoMkt = 0;
@@ -604,19 +476,19 @@ class TycoonGame {
       logsAuditoria.push(`
         <div>
           <b>📍 ${c.nome}:</b> Vendeu <b>${vendidosNaCidade} barris</b> (Faturamento: R$ ${faturadoNaCidade.toFixed(2)}).
-          ${faltouCerveja ? '<span style="color:var(--red);">⚠️ RUPTURA: Seus galpões não tinham estoque suficiente para suprir o pedido!</span>' : ''}
+          ${faltouCerveja ? '<span style="color:var(--red);">⚠️ RUPTURA: Estoque insuficiente no galpão!</span>' : ''}
         </div>
       `);
     });
 
-    // Devolve o estoque remanescente para os galpões das fábricas
+    // Devolve sobras para as fábricas
     this.dados.fabricas.forEach((fab) => {
       this.dados.cervejas.forEach(b => {
         fab.galpaoEstoque[b.id] = Math.floor(estoqueTotalDisponivel[b.id] / this.dados.fabricas.length);
       });
     });
 
-    // 4. Custos Fixos: Armazenagem de Estoque e Manutenção de Tanques
+    // 4. Custos Fixos (Armazenagem e Tanques)
     let totalBarrisArmazenados = 0;
     this.dados.fabricas.forEach(fab => {
       totalBarrisArmazenados += Object.values(fab.galpaoEstoque).reduce((a, b) => a + b, 0);
@@ -629,7 +501,7 @@ class TycoonGame {
 
     const lucroLiquido = recBruta - (custoInsumos + custoFrete + custoGalpao + custoManut + custoMkt);
 
-    // 5. Registro Contábil DRE
+    // 5. Salva DRE
     const registroDRE = {
       mes: this.dados.mes,
       recBruta,
@@ -642,10 +514,10 @@ class TycoonGame {
     };
     this.dados.historicoDRE.push(registroDRE);
 
-    // 6. Auditoria de Metas
+    // 6. Metas
     this.avaliarMetas(totalBarrisVendidos);
 
-    // 7. Próximo Mês & Exibição
+    // 7. Próximo Mês
     this.dados.mes += 1;
     this.salvar();
     this.atualizarTudo();
@@ -697,7 +569,7 @@ class TycoonGame {
   }
 }
 
-// Inicializa e expõe a classe globalmente
+// Inicia o jogo
 window.addEventListener('DOMContentLoaded', () => {
   window.tycoon = new TycoonGame();
   window.tycoon.init();
