@@ -1,3 +1,7 @@
+/* ==========================================================================
+   BEERWARE DESIGN SYSTEM — TEMA INDUSTRIAL / DARK TYCOON
+   ========================================================================== */
+
 :root {
   --bg-app: #0a0d10;
   --bg-surface: #14181f;
@@ -19,7 +23,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -31,15 +35,17 @@ body {
   flex-direction: column;
 }
 
-/* TOP HUD */
+/* --------------------------------------------------------------------------
+   HUD SUPERIOR FIXO
+   -------------------------------------------------------------------------- */
 .hud-top {
   background: #0f1318;
   border-bottom: 2px solid var(--border-light);
-  padding: 8px 14px;
+  padding: 8px 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   position: sticky;
   top: 0;
   z-index: 50;
@@ -47,7 +53,7 @@ body {
 
 .hud-group {
   display: flex;
-  gap: 14px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
@@ -64,7 +70,7 @@ body {
 }
 
 .hud-main {
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 900;
 }
 
@@ -76,25 +82,26 @@ body {
   background: linear-gradient(180deg, var(--amber-core), var(--amber-deep));
   border: 1px solid var(--amber-bright);
   border-radius: 8px;
-  padding: 8px 14px;
+  padding: 8px 12px;
   color: #000;
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
-  transition: transform 0.1s;
 }
 
 .btn-turn span { font-weight: 900; font-size: 0.85rem; }
 .btn-turn small { font-size: 0.6rem; font-weight: 700; opacity: 0.8; }
-.btn-turn:active { transform: scale(0.95); }
+.btn-turn:active { transform: scale(0.96); }
 
-/* NEWS BANNER */
+/* --------------------------------------------------------------------------
+   NOTICIÁRIO EM TEMPO REAL
+   -------------------------------------------------------------------------- */
 .news-banner {
   background: #181f28;
   border-bottom: 1px solid var(--border-light);
-  padding: 6px 14px;
+  padding: 6px 12px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -114,7 +121,9 @@ body {
 
 #news-headline { color: var(--amber-bright); }
 
-/* TABS */
+/* --------------------------------------------------------------------------
+   BARRA DE ABAS
+   -------------------------------------------------------------------------- */
 .nav-bar {
   display: flex;
   background: #0f1318;
@@ -124,11 +133,11 @@ body {
 
 .nav-tab {
   flex: 1;
-  min-width: 110px;
+  min-width: 100px;
   background: none;
   border: none;
   border-bottom: 3px solid transparent;
-  padding: 10px 8px;
+  padding: 10px 6px;
   color: var(--text-muted);
   font-weight: 700;
   font-size: 0.8rem;
@@ -156,30 +165,38 @@ body {
 
 .badge.hidden { display: none; }
 
-/* MAIN CONTENT */
+/* --------------------------------------------------------------------------
+   ÁREA PRINCIPAL
+   -------------------------------------------------------------------------- */
 .main-wrapper {
   max-width: 960px;
   margin: 0 auto;
   width: 100%;
-  padding: 14px;
+  padding: 12px;
   flex: 1;
 }
 
 .tab-pane { display: none; }
 .tab-pane.active { display: block; }
 
-.pane-head {
-  margin-bottom: 14px;
-}
-
+.pane-head { margin-bottom: 12px; }
 .pane-head h2 { font-size: 1.15rem; font-weight: 900; }
-.pane-head p { font-size: 0.8rem; color: var(--text-muted); margin-top: 3px; }
+.pane-head p { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
 .flex-split { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 
-/* CARDS */
+.placeholder-text {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-style: italic;
+  padding: 16px 0;
+}
+
+/* --------------------------------------------------------------------------
+   CONTAINERS DE CARDS
+   -------------------------------------------------------------------------- */
 .cards-layout {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 12px;
 }
 
@@ -250,8 +267,12 @@ body {
 input[type="range"] {
   width: 100%;
   accent-color: var(--amber-core);
+  cursor: pointer;
 }
 
+/* --------------------------------------------------------------------------
+   BOTÕES GERAIS
+   -------------------------------------------------------------------------- */
 .btn-accent {
   background: var(--bg-card);
   border: 1px solid var(--amber-core);
@@ -275,7 +296,27 @@ input[type="range"] {
 
 .full-btn { width: 100%; }
 
-/* DRE PANEL */
+.btn-outline-danger {
+  background: transparent;
+  border: 1px solid var(--red);
+  color: var(--red);
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.reset-box {
+  margin-top: 30px;
+  text-align: center;
+  border-top: 1px dashed var(--border-light);
+  padding-top: 20px;
+}
+
+/* --------------------------------------------------------------------------
+   DRE (DEMONSTRATIVO CONTÁBIL)
+   -------------------------------------------------------------------------- */
 .dre-panel {
   background: var(--bg-surface);
   border: 1px solid var(--border-light);
@@ -300,7 +341,9 @@ input[type="range"] {
 .dre-row.result { font-size: 1.05rem; font-weight: 900; padding-top: 4px; }
 .dre-divider { border: none; border-top: 1px solid var(--border-light); margin: 4px 0; }
 
-/* METAS */
+/* --------------------------------------------------------------------------
+   METAS E OBJETIVOS
+   -------------------------------------------------------------------------- */
 .metas-layout {
   display: flex;
   flex-direction: column;
@@ -320,12 +363,10 @@ input[type="range"] {
 
 .meta-card.ready {
   border-color: var(--amber-core);
-  background: rgba(245, 158, 11, 0.05);
+  background: rgba(245, 158, 11, 0.08);
 }
 
-.meta-card.claimed {
-  opacity: 0.5;
-}
+.meta-card.claimed { opacity: 0.5; }
 
 .btn-claim {
   background: var(--green);
@@ -337,25 +378,9 @@ input[type="range"] {
   cursor: pointer;
 }
 
-.btn-outline-danger {
-  background: transparent;
-  border: 1px solid var(--red);
-  color: var(--red);
-  padding: 8px 14px;
-  border-radius: 6px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.reset-box {
-  margin-top: 30px;
-  text-align: center;
-  border-top: 1px dashed var(--border-light);
-  padding-top: 20px;
-}
-
-/* MODAL */
+/* --------------------------------------------------------------------------
+   MODAL DE FECHAMENTO (BLINDAGEM CONTRA BLOQUEIO DE CLIQUES)
+   -------------------------------------------------------------------------- */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -367,14 +392,18 @@ input[type="range"] {
   z-index: 100;
 }
 
-.modal-backdrop.hidden { display: none; }
+.modal-backdrop.hidden {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
 
 .modal-box {
   background: var(--bg-surface);
   border: 2px solid var(--amber-core);
   border-radius: 12px;
   width: 100%;
-  max-width: 500px;
+  max-width: 480px;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
@@ -414,3 +443,5 @@ input[type="range"] {
   flex-direction: column;
   gap: 6px;
 }
+
+.text-muted { color: var(--text-muted); }
